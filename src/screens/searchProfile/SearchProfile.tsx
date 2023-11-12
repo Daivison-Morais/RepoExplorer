@@ -1,5 +1,5 @@
 import { TouchableOpacity } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components/native";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import ProfileSummaryCard from "../../components/profileSummaryCard/ProfileSummaryCard";
@@ -15,14 +15,13 @@ function SearchProfile() {
   const [text, onChangeText] = useState("");
 
   async function getDataUser() {
-    setClick(true);
+    setClick(true);   
     Keyboard.dismiss();
     try {
       const response = await axios.get(`https://api.github.com/users/${text}`);
-      console.log(response.data);
       setDataUser(response.data);
     } catch (error) {
-      alert("erro ao carregar dados");
+      alert("Perfil não encontrado");
     }
   }
 
@@ -53,6 +52,9 @@ function SearchProfile() {
             location={dataUser?.location}
             name={dataUser?.name}
             login={dataUser?.login}
+            id={dataUser?.id}
+            followers={dataUser?.followers}
+            public_repos={dataUser?.public_repos}
           />
         ) : (
           ""
@@ -71,7 +73,7 @@ const Input = styled.TextInput`
   border-radius: 5px;
   padding-left: 4px;
   height: 40px;
-  margin: 0px 6px;
+  margin-right: 8px;
   font-family: OpenSans_400Regular;
   font-size: 19px;
   border: solid 1px #fff;
@@ -85,16 +87,17 @@ const BlockSearch = styled.View`
   justify-content: space-between;
   align-items: center;
   padding: 3px;
-  margin: 18px 5px;
+  margin: 18px 0px;
   border-radius: 10px;
   min-height: 40px;
-  width: 92%;
+  width: 100%;
 `;
 
-const Title = styled.Text`
+export const Title = styled.Text`
   font-family: OpenSans_500Medium;
   color: #fff;
   font-size: 28px;
+  padding: 3px;
 `;
 
 const Main = styled.View`
@@ -102,8 +105,9 @@ const Main = styled.View`
   justify-content: center;
   align-items: center;
   border-radius: 12px;
-  width: 90%;
+  width: 100%;
   min-height: 25%;
+  padding: 0 15px;
   background-color: #031246;
 `;
 
@@ -111,6 +115,7 @@ const Container = styled.View<{ $click?: boolean }>`
   flex: 1;
   justify-content: center;
   align-items: center;
+  padding: 0 10px;
   background-color: #341992;
   ${(props) =>
     props.$click &&
