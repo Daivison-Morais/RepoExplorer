@@ -61,6 +61,6 @@ const Container = styled.View`
   border-radius: 12px;
   width: 100%;
   padding: 5px;
-  background-color: #0d31b3;
+  background-color: #2b3b9c;
   margin-top: 20px;
 `;

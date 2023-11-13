@@ -45,9 +45,9 @@ function SearchProfile() {
       ]);
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     saveLocalStorag();
-  }, [recentSearches])
+  }, [recentSearches]);
 
   async function saveLocalStorag() {
     const serializedList = JSON.stringify(recentSearches);
@@ -87,9 +87,9 @@ function SearchProfile() {
             login={dataUser?.login}
             id={dataUser?.id}
             followers={dataUser?.followers}
-            public_repos={dataUser?.public_repos} 
-            typeProfile={false}     
-            />
+            public_repos={dataUser?.public_repos}
+            typeProfile={false}
+          />
         ) : (
           ""
         )}
@@ -149,7 +149,7 @@ export const Title = styled.Text`
   font-family: OpenSans_500Medium;
   color: #fff;
   font-size: 28px;
-  padding: 3px;
+  padding: 5px;
 `;
 
 const Main = styled.View`

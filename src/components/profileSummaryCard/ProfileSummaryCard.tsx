@@ -40,16 +40,16 @@ export default function ProfileSummaryCard(props: User) {
         ) : (
           ""
         )}
-        {
-          props.typeProfile ? (
+        {props.typeProfile ? (
           <MoreData>
             <Bar></Bar>
             <Text>Id: {props?.id}</Text>
             <Text>Seguidores: {props?.followers?.toString()}</Text>
             <Text>Repositórios públicos: {props?.public_repos}</Text>
-          </MoreData>) : ""
-        }
-        
+          </MoreData>
+        ) : (
+          ""
+        )}
       </DataUser>
     </>
   );
@@ -76,7 +76,7 @@ const Location = styled.View`
 `;
 
 export const Text = styled.Text`
-text-align: center;
+  text-align: center;
   font-family: OpenSans_400Regular;
   color: white;
   font-size: 21px;

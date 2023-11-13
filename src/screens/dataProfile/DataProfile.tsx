@@ -14,19 +14,29 @@ export default function DataProfile(props: DataProfileProps) {
   const routeParam = props?.route?.params.routeParam;
 
   const [dataRepo, setDataRepo] = useState<Repo | any>(null);
+  const [dataRepoPined, setDataRepoPined] = useState<Repo | any>(null);
 
   useEffect(() => {
+    getDataRepositoriesPined();
     getDataRepositories();
   }, []);
 
   async function getDataRepositories() {
-    const teste = await dataUserLocalStorag();
-    console.log(teste)
     try {
       const response = await axios.get(
         `https://api.github.com/users/${routeParam.login}/repos`
       );
       setDataRepo(response.data);
+    } catch (error) {
+      alert("erro ao carregar dados");
+    }
+  }
+  async function getDataRepositoriesPined() {
+    try {
+      const response = await axios.get(
+        `https://api.github.com/users/${routeParam.login}/starred`
+      );
+      setDataRepoPined(response.data);
     } catch (error) {
       alert("erro ao carregar dados");
     }
@@ -43,18 +53,34 @@ export default function DataProfile(props: DataProfileProps) {
             login={routeParam?.login}
             followers={routeParam?.followers}
             id={routeParam?.id}
-            public_repos={routeParam.public_repos} 
-            typeProfile={true}          />
+            public_repos={routeParam.public_repos}
+            typeProfile={true}
+          />
           <TouchableOpacity onPress={() => {}}></TouchableOpacity>
 
           <CardRepositories>
             <Bar></Bar>
-            <ScrollView horizontal
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled={true}>
-            
-            <Title>Repositórios</Title>
 
+            <Title>Repositórios pinados</Title>
+            <FlatList
+              data={dataRepoPined}
+              renderItem={({ item }) => (
+                <RepositoryCard
+                  id={item.id}
+                  name={item.name}
+                  public_repos={item.public_repos}
+                  description={item.description}
+                  language={item.language}
+                  created_at={item.created_at}
+                  pushed_at={item.pushed_at}
+                  nameUser={routeParam.login}
+                />
+              )}
+              keyExtractor={(item) => item.id}
+            />
+
+            <Title>Repositórios</Title>
+            <Bar></Bar>
             <FlatList
               data={dataRepo}
               renderItem={({ item }) => (
@@ -71,23 +97,6 @@ export default function DataProfile(props: DataProfileProps) {
               )}
               keyExtractor={(item) => item.id}
             />
-            <FlatList
-              data={dataRepo}
-              renderItem={({ item }) => (
-                <RepositoryCard
-                  id={item.id}
-                  name={item.name}
-                  public_repos={item.public_repos}
-                  description={item.description}
-                  language={item.language}
-                  created_at={item.created_at}
-                  pushed_at={item.pushed_at}
-                  nameUser={routeParam.login}
-                />
-              )}
-              keyExtractor={(item) => item.id}
-            />
-            </ScrollView>
           </CardRepositories>
         </ScrollView>
       </Container>

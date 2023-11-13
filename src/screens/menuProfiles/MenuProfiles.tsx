@@ -26,7 +26,7 @@ export default function MenuProfiles() {
         <Container>
           <Title>Perfis Visualizados</Title>
           <FlatList
-          style={{width: '90%'}}
+            style={{ width: "90%" }}
             data={dataProfiles}
             renderItem={({ item }) => (
               <ProfileSummaryCard
@@ -41,9 +41,7 @@ export default function MenuProfiles() {
               />
             )}
             keyExtractor={(item) => item.id}
-            
           />
-           
         </Container>
       ) : (
         <Container>
@@ -73,6 +71,6 @@ const Container = styled.View`
   align-items: center;
   width: 100%;
   max-height: 100%;
-  padding: 23px  0;
+  padding: 23px 0;
   background-color: #341992;
 `;
