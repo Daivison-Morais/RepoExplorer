@@ -14,7 +14,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - [Styled Components](https://styled-components.com/)
 
 Como baixar o projeto
-- [Clique aqui](./.github/app-prfofile-github.apk)
+- [Clique aqui](./.github/app-prfofile-github.apk) e faça download do apk.
 
 
 Desenvolvido 💜 por Daivison Morais
