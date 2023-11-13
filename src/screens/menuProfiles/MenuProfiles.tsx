@@ -35,6 +35,8 @@ export default function MenuProfiles() {
                 name={item?.name}
                 login={item?.login}
                 id={item?.id}
+                followers={item?.followers}
+                public_repos={item?.public_repos}
               />
             )}
             keyExtractor={(item) => item.id}
@@ -68,6 +70,6 @@ const Container = styled.View`
   align-items: center;
   width: 100%;
   max-height: 100%;
-  padding-top: 23px;
+  padding: 23px  0;
   background-color: #341992;
 `;
