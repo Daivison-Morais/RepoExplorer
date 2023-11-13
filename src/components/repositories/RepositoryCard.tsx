@@ -1,34 +1,37 @@
+import React from "react";
 import { Linking, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { Repo } from "../../types/repo";
-import { useNavigation } from "@react-navigation/native";
 
 export default function RepositoryCard(props: Repo) {
-  const navigation = useNavigation<any>();
-
-  function extractDateAndTime (dateAndTime: string | undefined) {
-    if(dateAndTime){
-        const date = new Date(dateAndTime);
-        return date.toLocaleString('pt-BR', );
-    }else{"carregando"}
+  function extractDateAndTime(dateAndTime: string | undefined) {
+    if (dateAndTime) {
+      const date = new Date(dateAndTime);
+      return date.toLocaleString("pt-BR");
+    } else {
+      ("carregando");
+    }
   }
+
   return (
     <>
-     <TouchableOpacity 
-     activeOpacity={0.7}
-     onPress={() => { 
-      Linking.openURL(`https://github.com/${props.nameUser}/${props.name}`); 
-    }}>
-      <Container>
-       
-                      
-        <NameUser>Nome: {props.name}</NameUser>
-        {props.description? <NameUser>Descrição: {props.description}</NameUser> : ""}
-        <NameUser>Linguagem: {props.language}</NameUser>
-        <NameUser>Criação: { extractDateAndTime(props.created_at)}</NameUser>
-        <Text>Ultimo push: {extractDateAndTime(props.pushed_at)}</Text>
-        
-      </Container>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => {
+          Linking.openURL(`https://github.com/${props.nameUser}/${props.name}`);
+        }}
+      >
+        <Container>
+          <NameUser>Nome: {props.name}</NameUser>
+          {props.description ? (
+            <NameUser>Descrição: {props.description}</NameUser>
+          ) : (
+            ""
+          )}
+          <NameUser>Linguagem: {props.language}</NameUser>
+          <NameUser>Criação: {extractDateAndTime(props.created_at)}</NameUser>
+          <Text>Ultimo push: {extractDateAndTime(props.pushed_at)}</Text>
+        </Container>
       </TouchableOpacity>
     </>
   );

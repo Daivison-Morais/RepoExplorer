@@ -1,11 +1,13 @@
+
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import Entypo from "react-native-vector-icons/Entypo";
 import { User } from "../../types/user";
 import { useNavigation } from "@react-navigation/native";
-
 export default function ProfileSummaryCard(props: User) {
+  
   const navigation = useNavigation<any>();
+
   return (
     <>
       <DataUser>
@@ -27,14 +29,18 @@ export default function ProfileSummaryCard(props: User) {
 
         <Text>{props.name}</Text>
         <Text>{props.login}</Text>
-        <Location>
-          <Entypo
-            name="location-pin"
-            color="#620da8"
-            style={{ fontSize: 40 }}
-          />
-          <Text>{props.location}</Text>
-        </Location>
+        {props.location ? (
+          <Location>
+            <Entypo
+              name="location-pin"
+              color="#620da8"
+              style={{ fontSize: 40 }}
+            />
+            <Text>{props.location}</Text>
+          </Location>
+        ) : (
+          ""
+        )}
       </DataUser>
     </>
   );
@@ -45,7 +51,7 @@ const Location = styled.View`
   flex-direction: row;
 `;
 
-const Text = styled.Text`
+export const Text = styled.Text`
   font-family: OpenSans_400Regular;
   color: white;
   font-size: 22px;
@@ -68,8 +74,7 @@ const DataUser = styled.View`
   justify-content: flex-start;
   align-items: center;
   border-radius: 12px;
-  width: 100%;
-  max-height: 70%;
+  width: 100%; 
   padding: 20px;
   background-color: #031246;
   margin-top: 20px;

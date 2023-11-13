@@ -1,33 +1,62 @@
 import { TouchableOpacity } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
-import ProfileSummaryCard from "../../components/profileSummaryCard/ProfileSummaryCard";
+import ProfileSummaryCard, {
+  Text,
+} from "../../components/profileSummaryCard/ProfileSummaryCard";
 import axios from "axios";
 import { User } from "../../types/user";
 import { StatusBar } from "expo-status-bar";
 import { css } from "styled-components";
 import { Keyboard } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+import { PropsStack } from "../../routes/Stack/Models";
 
 function SearchProfile() {
   const [dataUser, setDataUser] = useState<User | null>(null);
   const [click, setClick] = useState<boolean>(false);
   const [text, onChangeText] = useState("");
+  const [recentSearches, setRecentSearches] = useState<User[]>([]);
+
+  const navigation = useNavigation<PropsStack>();
 
   async function getDataUser() {
-    setClick(true);   
+    setClick(true);
     Keyboard.dismiss();
     try {
       const response = await axios.get(`https://api.github.com/users/${text}`);
       setDataUser(response.data);
+
+      listRecentSearches(response.data);
     } catch (error) {
       alert("Perfil não encontrado");
     }
   }
 
+  async function listRecentSearches(dataSearch: User) {
+    const exist = recentSearches?.find((value) => value.id === dataSearch?.id);
+
+    if (!exist) {
+      setRecentSearches((recentSearches: User[]): User[] => [
+        ...recentSearches,
+        dataSearch,
+      ]);
+    }
+  }
+  useEffect(()=>{
+    saveLocalStorag();
+  }, [recentSearches])
+
+  async function saveLocalStorag() {
+    const serializedList = JSON.stringify(recentSearches);
+    await AsyncStorage.setItem("@listUsers", serializedList);
+  }
+
   return (
     <>
-      <Container $click={click} >
+      <Container $click={click}>
         <StatusBar backgroundColor="#ADD8E6"></StatusBar>
         <Main>
           <Title>Encontre Perfis</Title>
@@ -39,7 +68,11 @@ function SearchProfile() {
               cursorColor={"#b61dbb"}
               placeholderTextColor={"rgba(223, 212, 223, 0.5)"}
             />
-            <TouchableOpacity onPress={getDataUser}>
+            <TouchableOpacity
+              onPress={() => {
+                getDataUser();
+              }}
+            >
               <Contour>
                 <EvilIcons name="search" size={50} color="white" />
               </Contour>
@@ -59,10 +92,28 @@ function SearchProfile() {
         ) : (
           ""
         )}
+        <ButtonTouchableOpacity
+          onPress={() => {
+            navigation.navigate("MenuProfiles");
+          }}
+        >
+          <Text>Pesquisados recentemente</Text>
+        </ButtonTouchableOpacity>
       </Container>
     </>
   );
 }
+const ButtonTouchableOpacity = styled.TouchableOpacity`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 2%;
+  border-radius: 12px;
+  width: 100%;
+  height: 60px;
+  background-color: #031246;
+`;
 
 const Contour = styled.View`
   border: solid 1px #fff;
@@ -113,6 +164,7 @@ const Main = styled.View`
 
 const Container = styled.View<{ $click?: boolean }>`
   flex: 1;
+  position: relative;
   justify-content: center;
   align-items: center;
   padding: 0 10px;

@@ -2,21 +2,26 @@ import { ScrollView, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import ProfileSummaryCard from "../../components/profileSummaryCard/ProfileSummaryCard";
 import React, { useState, useEffect } from "react";
-import { User } from "../../types/user";
 import axios from "axios";
 import { Title } from "../searchProfile/SearchProfile";
 import { FlatList } from "react-native";
 import RepositoryCard from "../../components/repositories/RepositoryCard";
+import { dataUserLocalStorag } from "../../utils/DataProfileUtils";
+import { Repo } from "../../types/repo";
+import { DataProfileProps } from "../../types/propsDataProfile";
 
-export default function DataProfile(props: User) {
-  const { routeParam } = props?.route?.params;
-  const [dataRepo, setDataRepo] = useState<any>(null);
+export default function DataProfile(props: DataProfileProps) {
+  const routeParam = props?.route?.params.routeParam;
+
+  const [dataRepo, setDataRepo] = useState<Repo | any>(null);
 
   useEffect(() => {
     getDataRepositories();
   }, []);
 
   async function getDataRepositories() {
+    const teste = await dataUserLocalStorag();
+    console.log(teste)
     try {
       const response = await axios.get(
         `https://api.github.com/users/${routeParam.login}/repos`
@@ -30,7 +35,7 @@ export default function DataProfile(props: User) {
   return (
     <>
       <Container>
-        <ScrollView style={{flex: 1, width: "100%"}}>
+        <ScrollView style={{ flex: 1, width: "100%" }}>
           <ProfileSummaryCard
             avatar_url={routeParam?.avatar_url}
             location={routeParam?.location}
@@ -51,7 +56,7 @@ export default function DataProfile(props: User) {
           <CardRepositories>
             <Bar></Bar>
             <Title>Repositórios</Title>
-            
+
             <FlatList
               data={dataRepo}
               renderItem={({ item }) => (
@@ -64,15 +69,12 @@ export default function DataProfile(props: User) {
                   created_at={item.created_at}
                   pushed_at={item.pushed_at}
                   nameUser={routeParam.login}
-                  
-
                 />
               )}
               keyExtractor={(item) => item.id}
             />
-            
           </CardRepositories>
-        </ScrollView >
+        </ScrollView>
       </Container>
     </>
   );
@@ -80,9 +82,8 @@ export default function DataProfile(props: User) {
 
 const ScrollViews = styled.ScrollView`
   flex: 1;
-  
+
   width: 100%;
-  
 `;
 const MoreData = styled.View`
   display: flex;
