@@ -87,8 +87,9 @@ function SearchProfile() {
             login={dataUser?.login}
             id={dataUser?.id}
             followers={dataUser?.followers}
-            public_repos={dataUser?.public_repos}
-          />
+            public_repos={dataUser?.public_repos} 
+            typeProfile={false}     
+            />
         ) : (
           ""
         )}

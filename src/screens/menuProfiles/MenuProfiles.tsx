@@ -37,10 +37,13 @@ export default function MenuProfiles() {
                 id={item?.id}
                 followers={item?.followers}
                 public_repos={item?.public_repos}
+                typeProfile={true}
               />
             )}
             keyExtractor={(item) => item.id}
+            
           />
+           
         </Container>
       ) : (
         <Container>
@@ -66,7 +69,7 @@ const Text = styled.Text`
 `;
 const Container = styled.View`
   flex: 1;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   width: 100%;
   max-height: 100%;

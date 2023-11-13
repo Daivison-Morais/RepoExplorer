@@ -7,6 +7,7 @@ export type User = {
     id: string | undefined,
     followers?: string | undefined,
     public_repos?: string | undefined
+    typeProfile: boolean
 }
 
 

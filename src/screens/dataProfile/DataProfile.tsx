@@ -43,18 +43,16 @@ export default function DataProfile(props: DataProfileProps) {
             login={routeParam?.login}
             followers={routeParam?.followers}
             id={routeParam?.id}
-            public_repos={routeParam.public_repos}
-          />
+            public_repos={routeParam.public_repos} 
+            typeProfile={true}          />
           <TouchableOpacity onPress={() => {}}></TouchableOpacity>
 
-          <MoreData>
-            <Bar></Bar>
-            <Text>Id: {routeParam?.id}</Text>
-            <Text>Seguidores: {routeParam?.followers?.toString()}</Text>
-            <Text>Repositórios públicos: {routeParam?.public_repos}</Text>
-          </MoreData>
           <CardRepositories>
             <Bar></Bar>
+            <ScrollView horizontal
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled={true}>
+            
             <Title>Repositórios</Title>
 
             <FlatList
@@ -73,32 +71,40 @@ export default function DataProfile(props: DataProfileProps) {
               )}
               keyExtractor={(item) => item.id}
             />
+            <FlatList
+              data={dataRepo}
+              renderItem={({ item }) => (
+                <RepositoryCard
+                  id={item.id}
+                  name={item.name}
+                  public_repos={item.public_repos}
+                  description={item.description}
+                  language={item.language}
+                  created_at={item.created_at}
+                  pushed_at={item.pushed_at}
+                  nameUser={routeParam.login}
+                />
+              )}
+              keyExtractor={(item) => item.id}
+            />
+            </ScrollView>
           </CardRepositories>
         </ScrollView>
       </Container>
     </>
   );
 }
-
+export const Bar = styled.View`
+  height: 2px;
+  width: 80%;
+  background-color: #620da8;
+`;
 const ScrollViews = styled.ScrollView`
   flex: 1;
 
   width: 100%;
 `;
-const MoreData = styled.View`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  border-radius: 12px;
-  width: 100%;
-  background-color: #031246;
-`;
 
-const Bar = styled.View`
-  height: 2px;
-  width: 80%;
-  background-color: #620da8;
-`;
 const Text = styled.Text`
   font-family: OpenSans_400Regular;
   color: white;
